@@ -1,0 +1,315 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "IOTA API",
+    "description": "IOTA API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for users in the system"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/getAddress": {
+      "get": {
+        "tags": [
+          "Address"
+        ],
+        "parameters": [
+          {
+            "name": "seed",
+            "in": "query",
+            "type": "string",
+            "description": "Seed",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          {
+            "name": "index",
+            "in": "query",
+            "type": "string",
+            "description": "Index",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        ],
+        "summary": "Get balance of address",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Wert"
+            }
+          }
+        }
+      }
+    },
+    "/getBalance": {
+      "get": {
+        "tags": [
+          "Balance"
+        ],
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "type": "string",
+            "description": "Address",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        ],
+        "summary": "Get balance of address",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Wert"
+            }
+          }
+        }
+      }
+    },
+    "/getBalanceOfSeed": {
+      "get": {
+        "tags": [
+          "Balance"
+        ],
+        "parameters": [
+          {
+            "name": "seed",
+            "in": "query",
+            "type": "string",
+            "description": "Address",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        ],
+        "summary": "Get balance of seed",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Wert"
+            }
+          }
+        }
+      }
+    },
+    "/mamInit": {
+      "post": {
+        "tags": [
+          "MAM"
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "type": "string",
+            "description": "Key"
+          }
+        ],
+        "summary": "Init MAM",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/MAMState"
+            }
+          }
+        }
+      }
+    },
+    "/mamSend": {
+      "post": {
+        "tags": [
+          "MAM"
+        ],
+        "parameters": [
+          {
+            "name": "mam",
+            "in": "body",
+            "description": "send Message",
+            "schema": {
+              "$ref": "#/definitions/MAM"
+            }
+          }
+        ],
+        "summary": "Send MAM",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/mamReturn"
+            }
+          }
+        }
+      }
+    },
+    "/mamFetch": {
+      "post": {
+        "tags": [
+          "MAM"
+        ],
+        "parameters": [
+          {
+            "name": "root",
+            "in": "query",
+            "description": "Root",
+            "schema": {
+              "$ref": "#/definitions/mamFetch"
+            }
+          },
+          {
+            "name": "key",
+            "in": "query",
+            "description": "key",
+            "schema": {
+              "$ref": "#/definitions/mamFetch"
+            }
+          }
+        ],
+        "summary": "get mam",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/mamReturn"
+            }
+          }
+        }
+      }
+    },
+    "/transfer": {
+      "post": {
+        "tags": [
+          "Transfer"
+        ],
+        "description": "Transfer Token to",
+        "parameters": [
+          {
+            "name": "transfer",
+            "in": "body",
+            "description": "send token",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Sent",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Wert": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "MAM": {
+      "properties": {
+        "mamState": {
+          "type": "object"
+        },
+        "msg": {
+          "type": "string"
+        }
+      }
+    },
+    "MAMState": {
+      "properties": {
+        "state": {
+          "type": "string"
+        }
+      }
+    },
+    "mamReturn": {
+      "properties": {
+        "data": {
+          "type": "array"
+        }
+      }
+    },
+    "mamFetch": {
+      "properties": {
+        "root": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "Address": {
+      "properties": {
+        "address": {
+          "type": "string"
+        }
+      }
+    },
+    "Transaction": {
+      "required": [
+        "seed",
+        "to",
+        "value",
+        "tag",
+        "message"
+      ],
+      "properties": {
+        "seed": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "to": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "value": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "tag": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "message": {
+          "type": "string",
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

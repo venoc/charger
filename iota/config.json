@@ -1,0 +1,23 @@
+{
+  "mwm": 1,
+  "iri": {
+    "ip": "localhost",
+    "portAPI": 14267,
+    "portZMQ": 5556
+  },
+  "hardware": false,
+  "v1": {
+    "ip": "localhost",
+    "port": 8030,
+    "activePlatooner": true,
+    "passivePlatooner": false,
+    "seed": "SEED99999999999999999999999999999999999999999999999999999999999999999999999999999"
+  },
+  "v2": {
+    "ip": "localhost",
+    "port": 8031,
+    "activePlatooner": false,
+    "passivePlatooner": true,
+    "seed": "SEEDB9999999999999999999999999999999999999999999999999999999999999999999999999999"
+  }
+}

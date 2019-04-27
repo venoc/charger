@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Tanglizer</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Tanglizer</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="mt-5">Tanglizer</h1>
+        <p id="balance">Your balance is: </p>
+        <input id="address" class="form-control" type="text" placeholder="Address">
+        <p></p>
+        <input id="value" class="form-control" type="number" placeholder="Value to be sent">
+        <p></p>
+        <button id="getAddress" class="btn btn-primary">Get Address</button>
+        <p></p>
+        <button id="send" class="btn btn-primary">Send</button>
+        <p id="hash"> </p>
+        <div id="load">
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <ul class="list-unstyled">
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p></p>
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    $("#load").hide();
+    
+    // ###################
+    //Place your IP here
+    let ip = "localhost";
+
+    let address, value, seed, data;
+    seed = "SEED99999999999999999999999999999999999999999999999999999999999999999999999999999";
+    data = {
+      "seed": seed,
+      "to": address,
+      "value": 10,
+      "tag": "SUPERCHARGER",
+      "message": "I NEED SOME STROM"
+    };
+
+    $(document).ready(function () {
+      $("#getAddress").click(function () {
+        $("#address").val("RPP9FILTOTIVUVXTAFIZCMXABKLXFIJY9NUPC9XWWCXEIIQXBCSNS9DYTRAJJIGDVPNOABWDQDVTADBLC");
+      });
+    });
+    $("#hash").value = "test";
+    function getBalance() {
+      $.ajax({
+        type: "GET",
+        headers: {
+          'Accept': 'text/plain',
+        },
+        url: "http://" + ip + ":3000/api/getBalanceOfSeed",
+        data: { "seed": seed },
+        success: function (data) {
+          $("#balance").html("Your balance is: " + data + "i");
+
+          console.log(data);
+        }
+      });
+      setTimeout(() => { getBalance() }, 1000);
+    }
+    getBalance();
+
+    $("#send").click(function () {
+      $("#load").show();
+      data.to = $("#address").val();
+      data.value = $('#value').val();
+      $.ajax({
+        type: "POST",
+        headers: {
+          'Accept': 'text/plain',
+          'Content-Type': 'application/json'
+        },
+        //    dataType: "json",
+        url: "http://" + ip + ":3000/api/transfer",
+        data: JSON.stringify(data),
+        success: function (data) {
+          $("#load").hide();
+          $("#hash").html("Transaction address: \n" + data);
+          console.log(data);
+        }
+      });
+    });
+
+
+  </script>
+
+</body>
+
+</html>
